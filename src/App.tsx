@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from './lib/supabase'
+
 
 function App() {
   const { t, i18n } = useTranslation()
@@ -27,9 +29,25 @@ function App() {
     i18n.changeLanguage(lng)
   }
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     console.log('Analyzing project:', projectInput)
-    // AI analysis logic here
+
+    try {
+      // Save the analysis request to Supabase backend
+      const { data, error } = await supabase
+        .from('analysis_requests')
+        .insert([
+          { project_description: projectInput, created_at: new Date().toISOString() }
+        ])
+
+      if (error) {
+        console.error('Error saving to backend:', error)
+      } else {
+        console.log('Successfully saved to backend:', data)
+      }
+    } catch (err) {
+      console.error('Backend connection failed:', err)
+    }
   }
 
   return (
