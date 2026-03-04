@@ -167,7 +167,8 @@ i18n
     },
     interpolation: {
       escapeValue: false
-    }
+    },
+    react: { useSuspense: false }
   })
 
 export default i18n
