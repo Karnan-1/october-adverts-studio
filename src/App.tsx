@@ -1,11 +1,12 @@
 import { useState, useEffect, MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Routes, Route } from 'react-router-dom'
 import { supabase } from './lib/supabase'
+import AdminApp from './admin/AdminApp'
 import './parallax.css'
 
 
-function App() {
+function Home() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const [projectInput, setProjectInput] = useState('')
@@ -140,6 +141,15 @@ function App() {
         </section>
       </div>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/admin" element={<AdminApp />} />
+    </Routes>
   )
 }
 
