@@ -1,30 +1,39 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
   const { t, i18n } = useTranslation()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const navigate = useNavigate()
+  const [projectInput, setProjectInput] = useState('')
+  const [greeting, setGreeting] = useState('Good Afternoon')
 
   const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'es', name: 'Español' },
-    { code: 'fr', name: 'Français' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'it', name: 'Italiano' },
-    { code: 'pt', name: 'Português' },
-    { code: 'hi', name: 'हिन्दी' },
-    { code: 'zh', name: '中文' },
-    { code: 'ja', name: '日本語' },
-    { code: 'ar', name: 'العربية' }
+    { code: 'en', name: 'EN' },
+    { code: 'it', name: 'IT' },
+    { code: 'es', name: 'ES' },
+    { code: 'fr', name: 'FR' },
+    { code: 'de', name: 'DE' }
   ]
+
+  useEffect(() => {
+    const hour = new Date().getHours()
+    if (hour < 12) setGreeting('Good Morning')
+    else if (hour < 18) setGreeting('Good Afternoon')
+    else setGreeting('Good Evening')
+  }, [])
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
-    setMenuOpen(false)
+  }
+
+  const handleAnalyze = () => {
+    console.log('Analyzing project:', projectInput)
+    // AI analysis logic here
   }
 
   return (
-    <div className="app">
+    <div className="app dark-theme">
       {/* Navigation */}
       <nav className="navbar">
         <div className="container">
@@ -32,85 +41,62 @@ function App() {
             <h1>October Adverts</h1>
           </div>
           <div className="nav-menu">
-            <div className="language-selector">
-              <button 
-                className="language-btn"
-                onClick={() => setMenuOpen(!menuOpen)}
-                aria-label={t('language')}
-              >
-                🌐 {languages.find(l => l.code === i18n.language)?.name || 'English'}
-              </button>
-              {menuOpen && (
-                <div className="language-dropdown">
-                  {languages.map(lang => (
-                    <button
-                      key={lang.code}
-                      onClick={() => changeLanguage(lang.code)}
-                      className={i18n.language === lang.code ? 'active' : ''}
-                    >
-                      {lang.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <a href="/" className="nav-link">Home</a>
+            <a href="/about" className="nav-link">About</a>
+            <a href="/case-studies" className="nav-link">Case Studies</a>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero-modern">
         <div className="container">
-          <div className="hero-content">
-            <h1 className="hero-title">{t('welcome')}</h1>
-            <h2 className="hero-tagline">{t('tagline')}</h2>
-            <p className="hero-subtitle">{t('subtitle')}</p>
-            <p className="hero-description">{t('description')}</p>
-            <button className="cta-button">{t('contact')}</button>
+          <div className="hero-content-center">
+            <p className="greeting">{greeting} 👋</p>
+            <h1 className="hero-title-large">
+              We Build <br />
+              <span className="gradient-text">Brand Experiences</span> <br />
+              End-to-End
+            </h1>
+            <p className="hero-description-large">
+              From idea to sales. Tell us what you're building and our AI will show you<br />
+              how we can help bring your vision to life.
+            </p>
+
+            {/* Language Selector */}
+            <div className="language-selector-inline">
+              {languages.map(lang => (
+                <button
+                  key={lang.code}
+                  onClick={() => changeLanguage(lang.code)}
+                  className={`lang-btn ${i18n.language === lang.code ? 'active' : ''}`}
+                >
+                  {lang.name}
+                </button>
+              ))}
+            </div>
+
+            {/* AI Input Box */}
+            <div className="ai-input-container">
+              <div className="input-box">
+                <span className="sparkle-icon">✨</span>
+                <input
+                  type="text"
+                  placeholder="Looking for a complete digital transformation..."
+                  value={projectInput}
+                  onChange={(e) => setProjectInput(e.target.value)}
+                  className="ai-input"
+                />
+              </div>
+              <p className="input-helper">Tell us about your project and we'll show you how we can help</p>
+              <button className="analyze-btn" onClick={handleAnalyze}>
+                ✈️ Analyze
+              </button>
+            </div>
+
           </div>
         </div>
       </section>
-
-      {/* Services Section */}
-      <section className="services">
-        <div className="container">
-          <h2 className="section-title">{t('services')}</h2>
-          <div className="services-grid">
-            <div className="service-card">
-              <div className="service-icon">🎯</div>
-              <h3>{t('service1')}</h3>
-              <p>We craft strategic brand identities that resonate with your audience and drive business growth.</p>
-            </div>
-            <div className="service-card">
-              <div className="service-icon">📱</div>
-              <h3>{t('service2')}</h3>
-              <p>Comprehensive digital marketing campaigns that amplify your brand across all online channels.</p>
-            </div>
-            <div className="service-card">
-              <div className="service-icon">✍️</div>
-              <h3>{t('service3')}</h3>
-              <p>Engaging content that tells your brand story and connects with your target audience.</p>
-            </div>
-            <div className="service-card">
-              <div className="service-icon">✨</div>
-              <h3>{t('service4')}</h3>
-              <p>Memorable experiential campaigns that create lasting impressions and brand loyalty.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <p>&copy; 2025 October Adverts. All rights reserved.</p>
-          <div className="social-links">
-            <a href="#" aria-label="Facebook">Facebook</a>
-            <a href="#" aria-label="Instagram">Instagram</a>
-            <a href="#" aria-label="LinkedIn">LinkedIn</a>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
