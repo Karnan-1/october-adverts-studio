@@ -6,18 +6,18 @@
 }
 
 :root {
-  /* Dark Theme Colors */
-  --primary-color: #d946ef;
-  --secondary-color: #0ea5e9;
-  --accent-color: #ec4899;
-  --text-color: #e5e7eb;
-  --text-light: #9ca3af;
-  --background-color: #0f172a;
-  --card-background: #1e293b;
-  --border-color: #334155;
-  --hover-color: #ec4899;
-  --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 8px 24px rgba(236, 72, 153, 0.2);
+  /* Premium Light Theme Colors */
+  --primary-color: #6366f1; /* Deep Indigo Accent */
+  --secondary-color: #0ea5e9; /* Sky Blue */
+  --accent-color: #f43f5e; /* Rose */
+  --text-color: #0f172a; /* Slate 900 for high contrast text */
+  --text-light: #475569; /* Slate 600 for secondary text */
+  --background-color: #f8fafc; /* Very light slate background */
+  --card-background: #ffffff; /* Pure white cards */
+  --border-color: #e2e8f0; /* Light borders */
+  --hover-color: #818cf8; /* Lighter indigo for hover states */
+  --shadow: 0 4px 24px rgba(15, 23, 42, 0.05); /* Soft, subtle shadow */
+  --shadow-hover: 0 12px 32px rgba(99, 102, 241, 0.15); /* Colorful shadow for hover */
 }
 
 html {
@@ -28,19 +28,21 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  background: var(--background-color);
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll from parallax elements */
 }
 
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  position: relative;
+  overflow: hidden; /* Needed to contain absolutely positioned parallax background */
+  background: #ffffff;
 }
 
-.dark-theme {
-  background: radial-gradient(ellipse at top right, rgba(217, 70, 239, 0.1), transparent 50%),
-    radial-gradient(ellipse at bottom left, rgba(14, 165, 233, 0.1), transparent 50%),
-    #0f172a;
+/* Base Light Theme Background */
+.light-theme {
+  background: transparent;
 }
 
 .container {
@@ -54,10 +56,11 @@ body {
   padding: 1.5rem 0;
   position: sticky;
   top: 0;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.85); /* Light glassmorphism */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .navbar .container {
@@ -68,8 +71,8 @@ body {
 
 .nav-brand h1 {
   font-size: 1.8rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #d946ef, #ec4899);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -91,8 +94,8 @@ body {
 }
 
 .nav-link:hover {
-  color: var(--text-color);
-  background: rgba(217, 70, 239, 0.1);
+  color: var(--primary-color);
+  background: rgba(99, 102, 241, 0.08); /* Subtle indigo highlight */
 }
 
 .nav-link.active {
@@ -127,12 +130,13 @@ body {
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 2rem;
-  color: white;
+  color: var(--text-color); /* Dark text for light mode */
+  letter-spacing: -0.02em;
   animation: slideUp 0.8s ease-out;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #d946ef, #ec4899, #f43f5e);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -157,27 +161,30 @@ body {
 }
 
 .lang-btn {
-  padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.75rem;
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
   border-radius: 50px;
   color: var(--text-light);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
 }
 
 .lang-btn:hover {
-  background: rgba(217, 70, 239, 0.2);
+  background: #f8fafc;
   border-color: var(--primary-color);
+  color: var(--primary-color);
   transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 .lang-btn.active {
   background: var(--primary-color);
   border-color: var(--primary-color);
   color: white;
+  box-shadow: var(--shadow-hover);
 }
 
 /* AI Input Container */
@@ -189,28 +196,29 @@ body {
 
 .input-box {
   position: relative;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-background);
+  border: 2px solid var(--border-color);
   border-radius: 20px;
   padding: 1.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow);
 }
 
 .input-box:focus-within {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(217, 70, 239, 0.1);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1), var(--shadow-hover);
+  transform: translateY(-1px);
 }
 
 .sparkle-icon {
   font-size: 1.5rem;
-  padding: 0.5rem;
-  background: rgba(217, 70, 239, 0.2);
-  border-radius: 10px;
+  padding: 0.6rem;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 12px;
 }
 
 .ai-input {
@@ -218,13 +226,13 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  color: white;
-  font-size: 1rem;
+  color: var(--text-color);
+  font-size: 1.1rem;
   font-weight: 500;
 }
 
 .ai-input::placeholder {
-  color: var(--text-light);
+  color: #94a3b8; /* Slate 400 */
 }
 
 .input-helper {
@@ -237,20 +245,21 @@ body {
 .analyze-btn {
   width: 100%;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #d946ef, #ec4899);
+  background: var(--text-color); /* Elegant dark button in light mode */
   border: none;
   border-radius: 50px;
   color: white;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(217, 70, 239, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
 }
 
 .analyze-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(217, 70, 239, 0.4);
+  background: var(--primary-color);
+  box-shadow: var(--shadow-hover);
 }
 
 .analyze-btn:active {
